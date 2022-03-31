@@ -63,6 +63,12 @@ a {
     background: #1c1c1c;
 }
 
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .Tasks {
     color: #788cde;
     font-size: 38px;
