@@ -1,0 +1,74 @@
+body {
+    font-family: sans-serif;
+    background: #1c1c1c;
+    color: #f3f3f3;
+}
+
+.additional {
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #212121;
+}
+
+.additional, .block {
+    border: 2px solid #303030;
+    border-radius: 8px;
+}
+
+.additional a {
+    font-size: 26px;
+    padding: 10px;
+}
+
+.additional a:hover {
+    background: #3d3d40;
+}
+
+a {
+    text-decoration: none;
+    color: #f3f3f3;
+}
+
+.header, .newTaskMenu {
+    display: flex;
+}
+
+.header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.newTaskMenu {
+    position: sticky;
+    top: 0;
+    justify-content: center;
+    align-self: flex-end;
+    padding: 20px;
+    background: #1c1c1c;
+}
+
+.Tasks {
+    color: #788cde;
+    font-size: 38px;
+    padding: 0 0 0 20px;
+}
+
+.makeTask {
+    width: 1400px;
+    height: 50px;
+    border-radius: 8px;
+    font-size: 20px;
+    background: #212121;
+    border: 0;
+    padding: 0 10px 0 10px;
+}
+
+.makeTask:focus {
+    background: #3c3c3c;
+}
+
+.patch{
+    height: 80px;
+}
