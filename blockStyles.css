@@ -1,7 +1,8 @@
 .block {
-    width: 1400px;
+    width: 1200px;
     display: flex;
-    margin: 20px;
+    justify-content: space-between;
+    margin: 16px;
 }
 
 .taskButtons {
@@ -11,7 +12,7 @@
 }
 
 .taskButton {
-    padding: 10px;
+    padding: 8px;
 }
 
 .taskButton:hover {
@@ -19,7 +20,7 @@
 }
 
 .taskText {
-    padding: 0 10px 0 10px
+    padding: 0 8px 0 8px
 }
 
 .taskButton {
