@@ -1,26 +1,26 @@
 let num = 0;
 
-let deleteAllCompletedTasks = () => {
+const deleteAllCompletedTasks = () => {
     if (!confirm("Are you sure you want to delete all COMPLETED tasks?"))
         return;
-    let tasks = document.getElementById("completedTasks");
+    const tasks = document.getElementById("completedTasks");
     tasks.innerHTML = "";
 }
 
-let deleteAllTasks = () => {
+const deleteAllTasks = () => {
     if (!confirm("Are you sure you want to delete ALL tasks?"))
         return;
-    let tasks = document.getElementById("main");
+    const tasks = document.getElementById("main");
     tasks.innerHTML = `
         <div class="uncompleted" id="uncompletedTasks">
             
         </div>
         <div class="completed" id="completedTasks">
             
-        </div>`
+        </div>`;
 }
 
-let getTemplate = (type, value, id) => {
+const getTemplate = (type, value, id) => {
     if (!type) {
         return `
                 <div class="block" id="${id}">
@@ -41,31 +41,31 @@ let getTemplate = (type, value, id) => {
     }
 }
 
-let addNewTask = () => {
+const addNewTask = () => {
     num++;
-    let input = document.forms.formMakeTask.makeTask;
-    let task = input.value;
+    const input = document.forms.formMakeTask.makeTask;
+    const task = input.value;
     input.value = "";
-    let beginOfUncompleted = document.getElementById("uncompletedTasks");
+    const beginOfUncompleted = document.getElementById("uncompletedTasks");
     beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(0, task, num));
     return false;
 }
 
-let deleteTask = (id) => {
-    let task = document.getElementById(id);
+const deleteTask = (id) => {
+    const task = document.getElementById(id);
     task.outerHTML = "";
 }
 
-let makeCompleted = (id) => {
-    let task = document.getElementById(id).firstElementChild.innerHTML;
+const makeCompleted = (id) => {
+    const task = document.getElementById(id).firstElementChild.innerHTML;
     deleteTask(id);
-    let beginOfCompleted = document.getElementById("completedTasks");
+    const beginOfCompleted = document.getElementById("completedTasks");
     beginOfCompleted.insertAdjacentHTML('afterbegin', getTemplate(1, task, id));
 }
 
-let makeUncompleted = (id) => {
-    let task = document.getElementById(id).firstElementChild.innerHTML;
+const makeUncompleted = (id) => {
+    const task = document.getElementById(id).firstElementChild.innerHTML;
     deleteTask(id);
-    let beginOfCompleted = document.getElementById("uncompletedTasks");
-    beginOfCompleted.insertAdjacentHTML('afterbegin', getTemplate(0, task, id));
+    const beginOfUncompleted = document.getElementById("uncompletedTasks");
+    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(0, task, id));
 }
