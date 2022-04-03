@@ -33,6 +33,7 @@ a {
     background: #212121;
     border: 0;
     padding: 0 8px 0 8px;
+    color: #f3f3f3;
 }
 
 .makeTask:focus {
