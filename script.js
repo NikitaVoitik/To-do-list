@@ -10,6 +10,7 @@ const deleteAllCompletedTasks = () => {
 const deleteAllTasks = () => {
     if (!confirm("Are you sure you want to delete ALL tasks?"))
         return;
+    num = 0;
     const tasks = document.getElementById("main");
     tasks.innerHTML = `
         <div class="uncompleted" id="uncompletedTasks">
