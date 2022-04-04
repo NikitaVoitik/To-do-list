@@ -20,10 +20,15 @@
 }
 
 .taskText {
-    padding: 0 8px 0 8px
+    padding: 0 8px 0 8px;
+    word-break: break-all;
 }
 
 .taskButton {
     border: 2px solid #303030;
     border-radius: 8px;
+}
+
+.date {
+    padding-left: 10px;
 }
