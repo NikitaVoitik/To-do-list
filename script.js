@@ -1,9 +1,23 @@
 let num = 0;
 
+window.onload = () => {
+    document.addEventListener('keydown', () => {
+        if (event.code === 'Enter') {
+            addNewTask()
+        }
+    });
+}
+
 function Task(value, date) {
     if (typeof (date) == 'object') {
         let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day.toString();
+        }
         let month = date.getMonth();
+        if (month < 10) {
+            month = '0' + month.toString();
+        }
         const year = date.getFullYear();
         date = `${day}.${month}.${year}`;
     }
@@ -27,40 +41,23 @@ const deleteAllTasks = () => {
                       `;
 }
 
-const getTemplate = (type, task, id) => {
-    if (!type) {
-        //uncompleted task
-        return `
-                <div class="block" id="${id}">
-                    <div>
-                        <p class="date" id="date">${task.date}</p>              
-                        <p class="taskText">${task.value}</p>
-                    </div>
-                    <div class="taskButtons">
-                        <a class="taskButton" href="#" onclick="makeCompleted(this.parentNode.parentNode.id)">Complete</a>
-                        <a class="taskButton" href="#" onclick="deleteTask(this.parentNode.parentNode.id)">Delete</a>
-                    </div>
+const getTemplate = (task, id) => {
+    return `
+            <div class="block flex" id="${id}">
+                <div>
+                    <p class="date" id="date">${task.date}</p>
+                    <p class="taskText">${task.value}</p>
                 </div>
-               `;
-    } else {
-        //completed task
-        return `
-                <div class="block" id="${id}">
-                    <div>
-                        <p class="date" id="date">${task.date}</p>              
-                        <p class="taskText">${task.value}</p>
-                    </div>
-                    <div class="taskButtons">
-                        <a class="taskButton" href="#" onclick="makeUncompleted(this.parentNode.parentNode.id)">Uncomplete</a>
-                        <a class="taskButton" href="#" onclick="deleteTask(this.parentNode.parentNode.id)">Delete</a>
-                    </div>
+                <div class="taskButtons flex">
+                    <a class="taskButton" href="#" onclick="makeCompleted(this.parentNode.parentNode.id)">Complete</a>
+                    <a class="taskButton" href="#" onclick="deleteTask(this.parentNode.parentNode.id)">Delete</a>
                 </div>
-                `;
-    }
+            </div>
+           `;
 }
 
 const addNewTask = () => {
-    const input = document.forms.formMakeTask.makeTask;
+    const input = document.getElementById('makeTask');
     const task = new Task(input.value, new Date());
     input.value = null;
     let empty = true;
@@ -70,12 +67,12 @@ const addNewTask = () => {
             break;
         }
     }
-    if (empty){
+    if (empty) {
         return false;
     }
     num++;
     const beginOfUncompleted = document.getElementById("uncompletedTasks");
-    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(0, task, num));
+    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(task, num));
     return false;
 }
 
@@ -90,7 +87,7 @@ const makeCompleted = (id) => {
     console.log(task);
     deleteTask(id);
     const beginOfCompleted = document.getElementById("completedTasks");
-    beginOfCompleted.insertAdjacentHTML('afterbegin', getTemplate(1, task, id));
+    beginOfCompleted.insertAdjacentHTML('afterbegin', getTemplate(task, id));
 }
 
 const makeUncompleted = (id) => {
@@ -99,5 +96,5 @@ const makeUncompleted = (id) => {
     console.log(task);
     deleteTask(id);
     const beginOfUncompleted = document.getElementById("uncompletedTasks");
-    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(0, task, id));
+    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(task, id));
 }

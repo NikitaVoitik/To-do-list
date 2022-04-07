@@ -1,14 +1,14 @@
 .block {
-    width: 1200px;
-    display: flex;
+    width: 100%;
     justify-content: space-between;
-    margin: 16px;
+    margin: 16px 0 16px 0;
+    border: 2px solid #303030;
+    border-radius: 8px;
 }
 
 .taskButtons {
-    display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
 }
 
 .taskButton {
@@ -30,5 +30,6 @@
 }
 
 .date {
-    padding-left: 10px;
+    padding-left: 8px;
+    font-size: 12px;
 }

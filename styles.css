@@ -4,6 +4,10 @@ body {
     color: #f3f3f3;
 }
 
+.flex {
+    display: flex;
+}
+
 a {
     text-decoration: none;
     color: #f3f3f3;
@@ -11,22 +15,25 @@ a {
 
 .additional {
     margin-right: 16px;
-    display: flex;
     flex-direction: column;
     background: #212121;
 }
 
-.additional, .block {
+.additional {
     border: 2px solid #303030;
     border-radius: 8px;
 }
 
-.header, .newTaskMenu {
-    display: flex;
+.newTaskMenu {
+    position: sticky;
+    top: 0;
+    justify-content: center;
+    padding: 16px;
+    background: #1c1c1c;
 }
 
 .makeTask {
-    width: 1200px;
+    width: 80%;
     height: 40px;
     border-radius: 8px;
     font-size: 16px;
@@ -51,23 +58,17 @@ a {
 
 .header {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-}
-
-.newTaskMenu {
-    position: sticky;
-    top: 0;
-    justify-content: center;
-    align-self: flex-end;
-    padding: 16px;
-    background: #1c1c1c;
 }
 
 .main {
-    display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.uncompleted, .completed {
+    width: 80%;
 }
 
 .completed .block p {

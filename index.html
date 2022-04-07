@@ -8,20 +8,18 @@
     <script src="script.js"></script>
 </head>
 <body>
-<div class="header">
-    <p class="Tasks">Tasks</p>
-    <div class="additional">
+<div class="header flex">
+    <div class="additional flex">
         <a href="#" onclick="deleteAllTasks()">Delete all tasks</a>
         <a href="#" onclick="deleteAllCompletedTasks()">Delete all completed tasks</a>
     </div>
 </div>
 <hr>
-<div class="newTaskMenu">
-    <form onsubmit="return addNewTask();" name="formMakeTask">
-        <label><input placeholder="Your task..." type="text" class="makeTask" name="makeTask"></label>
-    </form>
+<div class="newTaskMenu flex">
+        <input id="makeTask" placeholder="Your task..." type="text" class="makeTask" name="makeTask">
 </div>
-<div class="main" id="main">
+<div class="main flex" id="main">
+    <p class="Tasks">Tasks</p>
     <div class="uncompleted" id="uncompletedTasks">
     </div>
     <div class="completed" id="completedTasks">
