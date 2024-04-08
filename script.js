@@ -1,20 +1,37 @@
-let num = 0;
+let tasks = [];
+let completedTasks = [];
 
-window.onload = () => {
-    document.addEventListener('keydown', () => {
+if (localStorage.getItem("tasks")) {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+}
+
+if (localStorage.getItem("completedTasks")) {
+    completedTasks = JSON.parse(localStorage.getItem("completedTasks"));
+}
+
+let uniqueId = tasks.length + completedTasks.length;
+
+$(document).ready(function () {
+    tasks.forEach(function (task) {
+        $("#uncompletedTasks").prepend(getTemplate(task));
+    });
+    completedTasks.forEach(function (task) {
+        $("#completedTasks").prepend(getTemplate(task));
+    });
+    $(document).keydown(function (event) {
         if (event.code === 'Enter') {
             addNewTask()
         }
     });
-}
+});
 
-function Task(value, date) {
+function Task(value, date, id) {
     if (typeof (date) == 'object') {
         let day = date.getDate();
         if (day < 10) {
             day = '0' + day.toString();
         }
-        let month = date.getMonth();
+        let month = date.getMonth() + 1;
         if (month < 10) {
             month = '0' + month.toString();
         }
@@ -23,78 +40,91 @@ function Task(value, date) {
     }
     this.value = value;
     this.date = date;
+    this.id = id;
 }
 
-const deleteAllCompletedTasks = () => {
-    const tasks = document.getElementById("completedTasks");
-    tasks.innerHTML = null;
-}
-
-const deleteAllTasks = () => {
-    num = 0;
-    const tasks = document.getElementById("main");
-    tasks.innerHTML = `
-                       <div class="uncompleted" id="uncompletedTasks">
-                       </div>
-                       <div class="completed" id="completedTasks">  
-                       </div>
-                      `;
-}
-
-const getTemplate = (task, id) => {
+const getTemplate = (task) => {
     return `
-            <div class="block flex" id="${id}">
+            <div class="block flex" id="${task.id}">
                 <div>
                     <p class="date" id="date">${task.date}</p>
                     <p class="taskText">${task.value}</p>
                 </div>
                 <div class="taskButtons flex">
-                    <a class="taskButton" href="#" onclick="makeCompleted(this.parentNode.parentNode.id)">Complete</a>
-                    <a class="taskButton" href="#" onclick="deleteTask(this.parentNode.parentNode.id)">Delete</a>
+                    <a class="taskButton" href="#" onclick="makeCompleted(${task.id})">Complete</a>
+                    <a class="taskButton" href="#" onclick="deleteTask(${task.id})">Delete</a>
                 </div>
-            </div>
-           `;
+            </div>`;
 }
 
-const addNewTask = () => {
-    const input = document.getElementById('makeTask');
-    const task = new Task(input.value, new Date());
-    input.value = null;
-    let empty = true;
-    for (let char of task.value) {
-        if (char !== ' ') {
-            empty = false;
-            break;
-        }
-    }
-    if (empty) {
+const addNewTask = function () {
+    const inputValue = $('#makeTask').val();
+    const task = new Task(inputValue, new Date(), uniqueId);
+    $('#makeTask').val(null);
+    if ($.trim(inputValue) === '') {
         return false;
     }
-    num++;
-    const beginOfUncompleted = document.getElementById("uncompletedTasks");
-    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(task, num));
-    return false;
+    uniqueId++;
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    $("#uncompletedTasks").prepend(getTemplate(task));
 }
 
-const deleteTask = (id) => {
-    const task = document.getElementById(id);
-    task.outerHTML = null;
+const deleteTask = function (id) {
+    const tasksIndex = tasks.findIndex(task => task.id === id);
+    if (tasksIndex !== -1) {
+        $("#" + id).remove();
+        tasks.splice(tasksIndex, 1);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    } else {
+        const completedTasksIndex = completedTasks.findIndex(task => task.id === id);
+        if (completedTasksIndex !== -1) {
+            $("#" + id).remove();
+            completedTasks.splice(completedTasksIndex, 1);
+            localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+        }
+    }
 }
 
-const makeCompleted = (id) => {
-    const information = document.getElementById(id).firstElementChild.children;
-    const task = new Task(information[1].innerHTML, information[0].innerHTML);
-    console.log(task);
-    deleteTask(id);
-    const beginOfCompleted = document.getElementById("completedTasks");
-    beginOfCompleted.insertAdjacentHTML('afterbegin', getTemplate(task, id));
+const makeCompleted = function (id) {
+    const tasksIndex = tasks.findIndex(task => task.id === id);
+    if (tasksIndex !== -1) {
+        const task = tasks[tasksIndex];
+        deleteTask(id);
+        completedTasks.push(task);
+        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+        const template = getTemplate(task).replace('makeCompleted', 'makeUncompleted').replace('Complete', 'Uncomplete');
+        $("#completedTasks").prepend(template);
+    }
 }
 
-const makeUncompleted = (id) => {
-    const information = document.getElementById(id).firstElementChild.children;
-    const task = new Task(information[1].innerHTML, information[0].innerHTML);
-    console.log(task);
-    deleteTask(id);
-    const beginOfUncompleted = document.getElementById("uncompletedTasks");
-    beginOfUncompleted.insertAdjacentHTML('afterbegin', getTemplate(task, id));
+const makeUncompleted = function (id) {
+    const completedTasksIndex = completedTasks.findIndex(task => task.id === id);
+    if (completedTasksIndex !== -1) {
+        const task = completedTasks[completedTasksIndex];
+        completedTasks.splice(completedTasksIndex, 1);
+        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+        $("#" + id).remove();
+        const template = getTemplate(task).replace('makeUncompleted', 'makeCompleted').replace('Uncomplete', 'Complete');
+        $("#uncompletedTasks").prepend(template);
+        tasks.push(task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+}
+
+// Added deleteAllTasks and deleteAllCompletedTasks functions
+const deleteAllTasks = function () {
+    tasks = [];
+    completedTasks = [];
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+    $("#uncompletedTasks").empty();
+    $("#completedTasks").empty();
+}
+
+
+const deleteAllCompletedTasks = function () {
+    completedTasks = [];
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+    $("#completedTasks").empty();
 }
